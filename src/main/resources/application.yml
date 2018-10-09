@@ -2,13 +2,16 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/wllgit?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
-    username: root
-    password: 123456
-
+#    url: jdbc:mysql://localhost:3306/wllgit?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+#    username: root
+#    password: 123456
+    url: jdbc:mysql://10.50.8.242:3306/databus?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: ds
+    password: 123456!
 
 # Logger Config
 logging:
   level:
     com.wll: debug
 # MyBatis-Plus 配置该演示无
+

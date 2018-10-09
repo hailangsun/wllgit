@@ -1,7 +1,5 @@
 package com.wll.demo.testplus.mapper;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.wll.demo.testplus.entity.User;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +27,7 @@ public class UserMapperTest {
         System.err.println("\n插入成功 ID 为：" + user.getId());
     }
 
-//
+    //
 //    @Test
 //    public void bDelete() {
 //        Assert.assertTrue(mapper.deleteById(3L) > 0);
@@ -55,4 +53,6 @@ public class UserMapperTest {
 ////        Assert.assertEquals("mp", user.getName());
 ////        Assert.assertTrue(3 == user.getAge());
 //    }
+
+
 }
