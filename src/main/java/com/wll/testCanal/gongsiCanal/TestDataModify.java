@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * yuangong 是数据库表
+ */
 @Component("yuangong")
 public class TestDataModify extends AbstractDataModify{
 

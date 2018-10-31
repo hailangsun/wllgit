@@ -1,0 +1,4 @@
+create table yuangong(name char(20),age int(30),id VARCHAR(100));
+insert into yuangong values('jack',21,'uui123456');
+
+UPDATE yuangong set name='yyyyp' WHERE age=21
