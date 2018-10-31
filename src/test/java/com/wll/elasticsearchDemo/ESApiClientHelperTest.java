@@ -1,12 +1,20 @@
 package com.wll.elasticsearchDemo;
 
+import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.ListenableActionFuture;
+import org.elasticsearch.action.get.GetRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
+import org.elasticsearch.index.reindex.DeleteByQueryAction;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +25,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
@@ -73,6 +82,20 @@ public class ESApiClientHelperTest {
 
 
     /**
+     * 使用get查询
+     */
+    @Test
+    public void testGet() {
+        GetRequestBuilder requestBuilder = helper.getClient().prepareGet("article", "content", "AWZWuqUic8nQ5f5otOpO");
+        GetResponse response = requestBuilder.execute().actionGet();
+        GetResponse getResponse = requestBuilder.get();
+        ListenableActionFuture<GetResponse> execute = requestBuilder.execute();
+        System.out.println(response.getSourceAsString());
+    }
+
+
+
+    /**
      * 更新文档
      * @throws Exception
      */
@@ -105,10 +128,11 @@ public class ESApiClientHelperTest {
         QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
         SearchResponse response = helper.getClient().prepareSearch(article).setQuery(queryBuilder).get();
         for (SearchHit searchHit : response.getHits()) {
-            Map<String, Object> map = searchHit.getSource();
-            System.out.println(map);
+//            Map<String, Object> map = searchHit.getSource();
+            println(searchHit);
         }
     }
+
 
 
 
@@ -159,5 +183,65 @@ public class ESApiClientHelperTest {
                         "hasSource : " + searchHit.hasSource()
         );
     }
+
+
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-自己网上找的测试*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    @Test
+    public void getColor(){
+        SearchResponse response = helper.getClient().prepareSearch("cars")
+                .setTypes("transactions")
+                .addAggregation(AggregationBuilders.terms("popular_colors")
+                        .field("color.keyword"))
+                .setSize(0)
+                .get();
+        StringTerms popular_colors = (StringTerms) response.getAggregations().asMap().get("popular_colors");
+        Iterator<StringTerms.Bucket> teamBucketIt = popular_colors.getBuckets().iterator();
+        while (teamBucketIt .hasNext()) {
+            StringTerms.Bucket buck = teamBucketIt.next();
+            String team = (String) buck.getKey();
+            long count = buck.getDocCount();
+            System.out.print(team+":");
+            System.out.println(count);
+        }
+    }
+
+
+    /**
+     * 手动生成JSON
+     */
+    @Test
+    public void CreateJSON(){
+
+        String json = "{" +
+                "\"user\":\"fendo\"," +
+                "\"postDate\":\"2013-01-30\"," +
+                "\"message\":\"Hell word\"" +
+                "}";
+
+        IndexResponse response = helper.getClient().prepareIndex("fendo", "fendodate")
+                .setSource(json)
+                .get();
+        System.out.println(response.getResult());
+
+    }
+
+    @Test
+    public void DeleteByQueryAPI(){
+        DeleteByQueryAction.INSTANCE.newRequestBuilder(helper.getClient())
+                .filter(QueryBuilders.matchQuery("user", "fendo"))      //查询
+                .source("fendo")                //index(索引名)
+                .execute(new ActionListener<BulkByScrollResponse>() {     //回调监听
+                    @Override
+                    public void onResponse(BulkByScrollResponse response) {
+                        long deleted = response.getDeleted();   //删除文档的数量
+                        System.out.println(deleted);
+                    }
+                    @Override
+                    public void onFailure(Exception e) {
+                        // Handle the exception
+                    }
+                });
+    }
+
 
 }
