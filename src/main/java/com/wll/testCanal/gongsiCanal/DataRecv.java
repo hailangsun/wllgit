@@ -5,6 +5,7 @@ import com.alibaba.otter.canal.protocol.CanalEntry;
 import com.alibaba.otter.canal.protocol.Message;
 import com.wll.testCanal.gongsiCanal.common.Connector;
 import com.wll.testCanal.gongsiCanal.handler.MessageHandler;
+import com.wll.testCanal.gongsiCanal.mail.SimpleMailSenderUtil;
 import com.wll.testCanal.gongsiCanal.service.MessageFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,8 @@ public class DataRecv extends AbstractDataRecv {
     private int messageInterval;
     @Autowired
     private MessageHandler handler;
+    @Autowired
+    private SimpleMailSenderUtil simpleMailSenderUtil;
     private boolean running = true;
 
     @Override
@@ -74,7 +77,6 @@ public class DataRecv extends AbstractDataRecv {
         if (connector != null) {
             connector.disconnect();
         }
-//        simpleMailSenderUtil.sendMail("canal is error", alarmContent);
-        System.out.println("发送邮件");
+        simpleMailSenderUtil.sendMail("canal is error", alarmContent);
     }
 }

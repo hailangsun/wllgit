@@ -31,8 +31,6 @@ public abstract class AbstractDataModify {
 
     /**
      * 数据处理
-     * @author: houys
-     * @date: 2018/5/3 11:42
      * @modified By:
      * @param rowDataList 待处理list
      * @param countDownLatch 计数器
@@ -55,8 +53,6 @@ public abstract class AbstractDataModify {
 
     /**
      * 实际数据处理类
-     * @author: houys
-     * @date: 2018/5/23 9:55
      * @modified By:
      * @param rowDataList
      * @return: void
@@ -102,8 +98,6 @@ public abstract class AbstractDataModify {
 
     /**
      * 将rows转为entitys
-     * @author: houys
-     * @date: 2018/5/31 12:20
      * @modified By:
      * @param rowDataList
      * @param cls

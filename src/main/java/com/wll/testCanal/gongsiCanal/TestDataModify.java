@@ -2,6 +2,7 @@ package com.wll.testCanal.gongsiCanal;
 
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import com.wll.testCanal.gongsiCanal.entity.TestEsDto;
+import com.wll.testCanal.gongsiCanal.mail.SimpleMailSenderUtil;
 import com.wll.testCanal.gongsiCanal.service.TestCanalService;
 import com.wll.testCanal.gongsiCanal.utils.FastJsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -132,6 +132,13 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- send mail begin -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.5.0-b01</version>
+		</dependency>
+		<!-- send mail end -->
 	</dependencies>
 
 	<build>

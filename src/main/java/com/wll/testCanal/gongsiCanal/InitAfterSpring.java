@@ -1,7 +1,9 @@
 package com.wll.testCanal.gongsiCanal;
 
+import com.wll.testCanal.gongsiCanal.mail.SimpleMailSenderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +19,9 @@ public class InitAfterSpring {
     @Resource(name = "dataRecv")
     private AbstractDataRecv dataRecv;
 
+    @Autowired
+    private SimpleMailSenderUtil simpleMailSenderUtil;
+
     @PostConstruct
     public void afterPropertiesSet() throws Exception {
         Executors.newSingleThreadExecutor(new ThreadFactory() {
@@ -28,8 +33,7 @@ public class InitAfterSpring {
                     @Override
                     public void uncaughtException(Thread t, Throwable e) {
                         logger.error("****canal connect 线程出现问题 ******",e);
-//                        simpleMailSenderUtil.sendMail("dataRecv-polestar-channel-uncaughtException", e + "");
-                        System.out.println("dataRecv-polestar-channel-uncaughtException"+ e + "");
+                        simpleMailSenderUtil.sendMail("dataRecv-polestar-channel-uncaughtException", e + "");
                     }
                 });
                 return thread;
